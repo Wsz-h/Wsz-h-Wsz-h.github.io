@@ -1,3 +1,146 @@
-// build time:Thu Mar 02 2023 12:39:30 GMT+0800 (中国标准时间)
-if(typeof mdui.$==="function"){var e=mdui.$}else if(typeof mdui.$==="undefined"){var e=mdui.JQ}else{console.error("MDUI JS Not Found!")}e(function(){e(window).on("scroll",function(t){var r=document.documentElement.scrollTop||document.body.scrollTop;if(r!==0){e("#gotop").removeClass("mdui-fab-hide")}else{e("#gotop").addClass("mdui-fab-hide")}});e("#gotop").on("click",function(e){(function t(){var e=document.documentElement.scrollTop||document.body.scrollTop;if(e!==0){window.requestAnimationFrame(t);window.scrollTo(0,e-e/5)}})()})});if(localStorage.getItem("mdui-theme-layout-dark")=="true"){e("body").addClass("mdui-theme-layout-dark");e("#footer").removeClass("mdui-color-theme");e("#nightmode_switch").prop("checked",true)}e("#nightmode_switch").on("click",function(t){if(e("body").hasClass("mdui-theme-layout-dark")){e("body").removeClass("mdui-theme-layout-dark");e("#footer").addClass("mdui-color-theme");localStorage.removeItem("mdui-theme-layout-dark")}else{e("body").addClass("mdui-theme-layout-dark");e("#footer").removeClass("mdui-color-theme");localStorage.setItem("mdui-theme-layout-dark",true)}});var t=function(t,r,o){e.ajax({url:t,dataType:"xml",success:function(t){var a=e(t).children("entry").map(function(){return{title:e(this).find("title").text(),content:e(this).find("content").text(),url:e(this).find("url").text()}}).get();var i=e(r)[0];var l=e(o)[0];i.addEventListener("input",function(){var e='<ul class="search-result-list">';var t=this.value.trim().toLowerCase().split(/[\s\-]+/);l.innerHTML="";if(this.value.trim().length<=0){return}a.forEach(function(r){var o=true;if(!r.title||r.title.trim()===""){r.title="Untitled"}var a=r.title.trim();var i=a.toLowerCase();var l=r.content.trim().replace(/<[^>]+>/g,"");var n=l.toLowerCase();var s=r.url;var u=-1;var c=-1;var d=-1;if(n!==""){t.forEach(function(e,t){u=i.indexOf(e);c=n.indexOf(e);if(u<0&&c<0){o=false}else{if(c<0){c=0}if(t==0){d=c}}})}else{o=false}if(o){e+='<li><a href="'+s+'" class="search-result-title" target="_blank">'+a+"</a>";var m=l;if(d>=0){var f=d-20;var h=d+80;if(f<0){f=0}if(f==0){h=100}if(h>m.length){h=m.length}var v=m.substr(f,h);t.forEach(function(e){var t=new RegExp(e,"gi");v=v.replace(t,'<em class="search-result-keyword">$&</em>')});e+='<p class="search-result-content">'+v+"...</p>"}e+="</li>"}});e+="</ul>";l.innerHTML=e})}})};var r=false;var o=function(){var o=e(".search-result").attr("data-resource");if(o){if(!r){r=true;t(o,".search-form-input",".search-result")}}};e("#search").on("close.mdui.dialog",function(){e(".search-form-input").val("");e(".search-result").html("")});
-//rebuild by hrmmi 
+/*MDUI JS Load*/
+if(typeof mdui.$ === "function"){
+  var $$ = mdui.$;
+} else if(typeof mdui.$ === "undefined"){
+  var $$ = mdui.JQ;
+} else {
+  console.error("MDUI JS Not Found!");
+};
+
+/* Gotop */
+$$(function () {
+  $$(window).on('scroll', function (e) {
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop !== 0) {
+      $$('#gotop').removeClass('mdui-fab-hide');
+    } else {
+      $$('#gotop').addClass('mdui-fab-hide');
+    }
+  });
+  $$('#gotop').on('click', function (e) {
+    (function animateScroll() {
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop !== 0) {
+        window.requestAnimationFrame(animateScroll);
+        window.scrollTo(0, scrollTop - (scrollTop / 5));
+      }
+    })();
+  });
+});
+
+/* Dark Mode */
+if (localStorage.getItem('mdui-theme-layout-dark')=='true') {
+  $$('body').addClass('mdui-theme-layout-dark');
+  $$('#footer').removeClass('mdui-color-theme');
+  $$('#nightmode_switch').prop('checked', true);
+}
+$$('#nightmode_switch').on('click', function (e) {
+  if ($$('body').hasClass('mdui-theme-layout-dark')) {
+    $$('body').removeClass('mdui-theme-layout-dark');
+    $$('#footer').addClass('mdui-color-theme');
+    localStorage.removeItem('mdui-theme-layout-dark');
+  } else {
+    $$('body').addClass('mdui-theme-layout-dark');
+    $$('#footer').removeClass('mdui-color-theme');
+    localStorage.setItem('mdui-theme-layout-dark', true);
+  }
+});
+
+/* Search */
+var searchFunc = function (path, search_id, content_id) {
+  $$.ajax({
+    url: path,
+    dataType: 'xml',
+    success: function (xmlResponse) {
+      var datas = $$(xmlResponse).children('entry').map(function () {
+        return {
+          title: $$(this).find('title').text(),
+          content: $$(this).find('content').text(),
+          url: $$(this).find('url').text()
+        };
+      }).get();
+      var $input = $$(search_id)[0];
+      var $resultContent = $$(content_id)[0];
+      $input.addEventListener('input', function () {
+        var str = '<ul class="search-result-list">';
+        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+        $resultContent.innerHTML = '';
+        if (this.value.trim().length <= 0) {
+          return;
+        }
+        datas.forEach(function (data) {
+          var isMatch = true;
+          if (!data.title || data.title.trim() === '') {
+            data.title = 'Untitled';
+          }
+          var orig_data_title = data.title.trim();
+          var data_title = orig_data_title.toLowerCase();
+          var orig_data_content = data.content.trim().replace(/<[^>]+>/g, '');
+          var data_content = orig_data_content.toLowerCase();
+          var data_url = data.url;
+          var index_title = -1;
+          var index_content = -1;
+          var first_occur = -1;
+          if (data_content !== '') {
+            keywords.forEach(function (keyword, i) {
+              index_title = data_title.indexOf(keyword);
+              index_content = data_content.indexOf(keyword);
+              if (index_title < 0 && index_content < 0) {
+                isMatch = false;
+              } else {
+                if (index_content < 0) {
+                  index_content = 0;
+                }
+                if (i == 0) {
+                  first_occur = index_content;
+                }
+              }
+            });
+          } else {
+            isMatch = false;
+          }
+          if (isMatch) {
+            str += '<li><a href="' + data_url + '" class="search-result-title" target="_blank">' + orig_data_title + '</a>';
+            var content = orig_data_content;
+            if (first_occur >= 0) {
+              var start = first_occur - 20;
+              var end = first_occur + 80;
+              if (start < 0) {
+                start = 0;
+              }
+              if (start == 0) {
+                end = 100;
+              }
+              if (end > content.length) {
+                end = content.length;
+              }
+              var match_content = content.substr(start, end);
+              keywords.forEach(function (keyword) {
+                var regS = new RegExp(keyword, 'gi');
+                match_content = match_content.replace(regS, '<em class="search-result-keyword">$&</em>');
+              });
+              str += '<p class="search-result-content">' + match_content + '...</p>';
+            }
+            str += '</li>';
+          }
+        });
+        str += '</ul>';
+        $resultContent.innerHTML = str;
+      });
+    }
+  });
+};
+var isListenSearch = false;
+var listenSearchFunc = function () {
+  var resource = $$('.search-result').attr('data-resource');
+  if (resource) {
+    if (!isListenSearch) { 
+      isListenSearch = true;
+      searchFunc(resource, '.search-form-input', '.search-result');
+    }
+  }
+};
+$$('#search').on('close.mdui.dialog',function () {
+  $$('.search-form-input').val('');
+  $$('.search-result').html('');
+})
