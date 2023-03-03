@@ -17,6 +17,9 @@
             <guid isPermalink="true">http://example.com/computer-science/java/course-1/myFirstBlog/</guid>
             <title>myFirstBlog</title>
             <link>http://example.com/computer-science/java/course-1/myFirstBlog/</link>
+            <category term="计算机科学" scheme="http://example.com/categories/computer-science/" />
+            <category term="Java" scheme="http://example.com/categories/computer-science/java/" />
+            <category term="零基础学Java语言-浙江大学-翁恺" scheme="http://example.com/categories/computer-science/java/course-1/" />
             <category term="wsz的第一篇博客" scheme="http://example.com/tags/wsz%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" />
             <pubDate>Thu, 02 Mar 2023 11:07:27 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;flink的时间与窗口&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#flink的时间与窗口&#34;&gt;#&lt;/a&gt; Flink 的时间与窗口&lt;/h1&gt;
